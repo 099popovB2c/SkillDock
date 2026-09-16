@@ -1,0 +1,8 @@
+{
+  "targets": {
+    "codex": "~/.codex/skills",
+    "claude": "~/.claude/skills",
+    "cursor": "~/.cursor/skills",
+    "gemini": "~/.gemini/skills"
+  }
+}
