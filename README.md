@@ -1,25 +1,22 @@
 # SkillDock
 
-Manage reusable AI-agent skills once and keep installations across coding agents visible and controlled.
+Manage reusable AI-agent skills once and sync them across Codex, Claude, Cursor, Gemini and custom targets.
 
-## v0.2.0
+## v0.3.0
 
-- Canonical local skill library (`skills/`)
-- Configurable Codex, Claude, Cursor, Gemini or custom targets
-- Managed installation manifest with SHA-256 fingerprints
-- `status` detects synced, drifted, unmanaged, missing and orphaned skills
-- `scan` discovers existing target skills without taking ownership
-- `sync --dry-run` previews multi-skill deployment
-- `adopt` imports an existing agent skill into the canonical library
-- Safe uninstall refuses to delete unmanaged skills unless explicitly forced
-- Automatic backup before replacement/removal
+- Add skills from a local directory or Git URL with `source-add`
+- Validate `SKILL.md` and reject symlink-containing sources before library import
+- Search simple local/remote registry JSON files
+- Install registry entries into the managed library
+- Save named skill profiles/collections and install a whole profile to multiple targets
+- Existing drift detection, backups, dry-run sync, adopt and safe uninstall retained
 
 ```bash
-python skilldock.py status
-python skilldock.py scan
-python skilldock.py install git-expert --to codex,claude --dry-run
-python skilldock.py sync --to codex,claude
-python skilldock.py adopt my-skill --from-target cursor
+python skilldock.py source-add my-skill https://github.com/example/skills.git --subdir skills/my-skill
+python skilldock.py registry-list registry.json --query git
+python skilldock.py registry-install git-expert registry.json
+python skilldock.py profile-save dev --skills git-expert,researcher
+python skilldock.py profile-install dev --to codex,claude --dry-run
 ```
 
-SkillDock never executes skill contents.
+Git sources require the `git` executable. Remote registries are plain JSON; no central SkillDock service is required.
