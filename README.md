@@ -1,24 +1,25 @@
 # SkillDock
 
-Manage reusable AI-agent skills/prompts once and sync them into multiple coding-agent folders.
+Manage reusable AI-agent skills once and keep installations across coding agents visible and controlled.
 
-## Features
+## v0.2.0
 
-- Local skill library (`skills/`)
-- Configurable targets for Codex, Claude, Cursor, Gemini or any custom agent
-- Install one skill to one or many agents
-- Diff installed copy vs library
-- Backup before overwrite
-- List skills and targets
-- Zero dependencies
-
-## Quick start
+- Canonical local skill library (`skills/`)
+- Configurable Codex, Claude, Cursor, Gemini or custom targets
+- Managed installation manifest with SHA-256 fingerprints
+- `status` detects synced, drifted, unmanaged, missing and orphaned skills
+- `scan` discovers existing target skills without taking ownership
+- `sync --dry-run` previews multi-skill deployment
+- `adopt` imports an existing agent skill into the canonical library
+- Safe uninstall refuses to delete unmanaged skills unless explicitly forced
+- Automatic backup before replacement/removal
 
 ```bash
-python skilldock.py init
-python skilldock.py list
-python skilldock.py install git-expert --to codex,claude
-python skilldock.py diff git-expert --to codex
+python skilldock.py status
+python skilldock.py scan
+python skilldock.py install git-expert --to codex,claude --dry-run
+python skilldock.py sync --to codex,claude
+python skilldock.py adopt my-skill --from-target cursor
 ```
 
-Edit `skilldock.json` to match your own agent directories.
+SkillDock never executes skill contents.
