@@ -1,22 +1,20 @@
 # SkillDock
 
-Manage reusable AI-agent skills once and sync them across Codex, Claude, Cursor, Gemini and custom targets.
+Manage reusable AI-agent skills once and sync them across Codex, Claude, Cursor, Gemini and custom agents.
 
-## v0.3.0
+## v0.4.0
 
-- Add skills from a local directory or Git URL with `source-add`
-- Validate `SKILL.md` and reject symlink-containing sources before library import
-- Search simple local/remote registry JSON files
-- Install registry entries into the managed library
-- Save named skill profiles/collections and install a whole profile to multiple targets
-- Existing drift detection, backups, dry-run sync, adopt and safe uninstall retained
+- Reproducible `skilldock.lock.json` with a SHA-256 content hash for every library skill
+- `skilllock.py verify --strict` detects missing, drifted and unlocked skills and exits non-zero for CI
+- `skilllock.py update` refreshes skills from their recorded Git/local sources using SkillDock's existing backup-safe source flow
+- Lockfile can be regenerated automatically after source updates
+- Existing registry search/install, profiles, target sync, drift detection, backups and source validation remain available
 
 ```bash
-python skilldock.py source-add my-skill https://github.com/example/skills.git --subdir skills/my-skill
-python skilldock.py registry-list registry.json --query git
-python skilldock.py registry-install git-expert registry.json
-python skilldock.py profile-save dev --skills git-expert,researcher
-python skilldock.py profile-install dev --to codex,claude --dry-run
+python skilllock.py lock
+python skilllock.py verify --strict
+python skilllock.py update
+python skilllock.py update researcher git-expert
 ```
 
-Git sources require the `git` executable. Remote registries are plain JSON; no central SkillDock service is required.
+Commit `skilldock.lock.json` when you want a project or team to share the exact same skill contents.
