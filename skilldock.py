@@ -1,9 +1,36 @@
 #!/usr/bin/env python3
 import argparse,difflib,hashlib,json,os,shutil,subprocess,tempfile,time,urllib.request
 from pathlib import Path
-VERSION='0.3.0';ROOT=Path(__file__).resolve().parent;CFG=ROOT/'skilldock.json';LIB=ROOT/'skills';BACK=ROOT/'backups';STATE=ROOT/'.skilldock-state.json';SOURCES=ROOT/'.skilldock-sources.json'
-def config():return json.loads(CFG.read_text())
-def write_config(c):CFG.write_text(json.dumps(c,indent=2),encoding='utf8')
+VERSION='0.4.0'
+SOURCE_ROOT=Path(__file__).resolve().parent
+
+def _runtime_root():
+ env=os.getenv('SKILLDOCK_HOME')
+ if env:return Path(env).expanduser().resolve()
+ if (SOURCE_ROOT/'.git').exists():return SOURCE_ROOT
+ return Path.home()/'.skilldock'
+
+ROOT=_runtime_root()
+CFG=ROOT/'skilldock.json'
+LIB=ROOT/'skills'
+BACK=ROOT/'backups'
+STATE=ROOT/'.skilldock-state.json'
+SOURCES=ROOT/'.skilldock-sources.json'
+
+def ensure_layout():
+ ROOT.mkdir(parents=True,exist_ok=True)
+ LIB.mkdir(exist_ok=True)
+ BACK.mkdir(exist_ok=True)
+ if not CFG.exists():CFG.write_text(json.dumps({'targets':{},'profiles':{}},indent=2),encoding='utf8')
+
+def config():
+ ensure_layout()
+ return json.loads(CFG.read_text(encoding='utf8'))
+
+def write_config(c):
+ ensure_layout()
+ CFG.write_text(json.dumps(c,indent=2),encoding='utf8')
+
 def load_json(p,default):
  try:return json.loads(p.read_text())
  except:return default
@@ -18,7 +45,7 @@ def skill_hash(path):
  if not path.exists():return None
  for p in sorted(x for x in path.rglob('*') if x.is_file()):h.update(str(p.relative_to(path)).encode());h.update(b'\0');h.update(p.read_bytes());h.update(b'\0')
  return h.hexdigest()
-def init():LIB.mkdir(exist_ok=True);BACK.mkdir(exist_ok=True);CFG.write_text(CFG.read_text() if CFG.exists() else '{"targets":{},"profiles":{}}');print('Initialized SkillDock.')
+def init():ensure_layout();print(f'Initialized SkillDock at {ROOT}.')
 def listall():
  print('Skills:');[print(' -',p.name) for p in sorted(LIB.iterdir()) if p.is_dir()];print('Targets:');[print(f' - {k}: {v}') for k,v in config().get('targets',{}).items()]
 def backup(dst,name,skill):

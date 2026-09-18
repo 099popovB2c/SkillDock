@@ -4,7 +4,7 @@ from pathlib import Path
 import skilldock
 
 VERSION="0.4.0"
-ROOT=Path(__file__).resolve().parent
+ROOT=skilldock.ROOT
 DEFAULT_LOCK=ROOT/"skilldock.lock.json"
 
 def load_json(path,default):
