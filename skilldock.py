@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse,difflib,hashlib,json,shutil,subprocess,tempfile,time,urllib.request
+import argparse,difflib,hashlib,json,os,shutil,subprocess,tempfile,time,urllib.request
 from pathlib import Path
 VERSION='0.3.0';ROOT=Path(__file__).resolve().parent;CFG=ROOT/'skilldock.json';LIB=ROOT/'skills';BACK=ROOT/'backups';STATE=ROOT/'.skilldock-state.json';SOURCES=ROOT/'.skilldock-sources.json'
 def config():return json.loads(CFG.read_text())

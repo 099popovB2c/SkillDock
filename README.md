@@ -1,3 +1,28 @@
+## Install with pipx
+
+Install directly from GitHub:
+
+```bash
+pipx install "git+https://github.com/099popovB2c/SkillDock.git"
+```
+
+Global commands:
+
+```text
+skilldock
+skilldock-lock
+```
+
+Initialize your local SkillDock home:
+
+```bash
+skilldock init
+```
+
+Installed mode stores mutable data under `~/.skilldock` by default. Set `SKILLDOCK_HOME` to use another location.
+
+---
+
 # SkillDock
 
 SkillDock is a **local skill manager for AI coding agents**. It lets you keep reusable agent instructions/skills in one library and synchronize them across Codex, Claude, Cursor, Gemini and custom agent targets.

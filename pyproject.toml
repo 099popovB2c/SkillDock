@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skilldock-agent"
+version = "0.4.0"
+description = "Manage reusable AI-agent skills across Codex, Claude, Cursor, Gemini and custom agents"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "099popovB2c"}]
+keywords = ["ai-agents", "skills", "codex", "claude", "cursor", "gemini", "cli"]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/099popovB2c/SkillDock"
+Repository = "https://github.com/099popovB2c/SkillDock"
+Issues = "https://github.com/099popovB2c/SkillDock/issues"
+
+[project.scripts]
+skilldock = "skilldock:main"
+skilldock-lock = "skilllock:main"
+
+[tool.setuptools]
+py-modules = ["skilldock", "skilllock"]
